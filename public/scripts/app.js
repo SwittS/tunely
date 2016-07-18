@@ -38,12 +38,12 @@ sampleAlbums.push({
 
 $(document).ready(function() {
   console.log('app.js loaded!');
-    sampleAlbums.forEach(function(album) {
+  $.get('/api/albums').success(function (albums) {
+    albums.forEach(function(album) {
       renderAlbum(album);
     });
   });
-  
-
+});
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {

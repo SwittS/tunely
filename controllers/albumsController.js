@@ -36,8 +36,9 @@ albums.push({
 
 // GET /api/albums
 function index(req, res) {
-  // FILL ME IN !
+  res.json(albums);
 }
+
 
 function create(req, res) {
   // FILL ME IN !

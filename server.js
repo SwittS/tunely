@@ -34,6 +34,12 @@ app.get('/', function homepage (req, res) {
 
 app.get('/api', controllers.api.index);
 
+app.get('/api/albums', controllers.albums.index, function (req, res){
+    db.Albums.find(function(err, albums){
+     if (err) { return console.log("index error: " + err); }
+     res.json(albums);
+  });
+});
 /**********
  * SERVER *
  **********/
