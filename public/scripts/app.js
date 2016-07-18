@@ -4,7 +4,7 @@
  * into functions and objects as needed.
  *
  */
-
+console.log("Sanity Check: JS is working!");
 
 /* hard-coded data! */
 var sampleAlbums = [];
@@ -36,17 +36,20 @@ sampleAlbums.push({
 
 
 
-
 $(document).ready(function() {
   console.log('app.js loaded!');
-});
-
-
-
+    sampleAlbums.forEach(function(album) {
+      renderAlbum(album);
+    });
+  });
+  
 
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
   console.log('rendering album:', album);
-
+  var templateHtml = $('#album-template').html();
+  var albumTemplate = Handlebars.compile(templateHtml);
+  var partialAlbumHtml = albumTemplate(album);
+  $('#albums').prepend(partialAlbumHtml);
 }
