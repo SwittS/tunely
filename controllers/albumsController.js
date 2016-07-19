@@ -1,13 +1,10 @@
-/************
- * DATABASE *
- ************/
-
-/* hard-coded data */
 var db = require('../models');
+
+
 
 // GET /api/albums
 function index(req, res) {
-  db.Album.find({}, function(err, allAlbums){
+  db.Album.find({}, function(err, allAlbums) {
     res.json(allAlbums);
   });
 }
@@ -15,10 +12,11 @@ function index(req, res) {
 function create(req, res) {
   console.log('body', req.body);
 
+  // split at comma and remove and trailing space
   var genres = req.body.genres.split(',').map(function(item) { return item.trim(); } );
   req.body.genres = genres;
 
-  db.Album.create(req.body, function(err, album){
+  db.Album.create(req.body, function(err, album) {
     if (err) { console.log('error', err); }
     console.log(album);
     res.json(album);
@@ -26,7 +24,11 @@ function create(req, res) {
 }
 
 function show(req, res) {
-  // FILL ME IN !
+  db.Album.findById(req.params.albumId, function(err, foundAlbum) {
+    if(err) { console.log('albumsController.show error', err); }
+    console.log('albumsController.show responding with', foundAlbum);
+    res.json(foundAlbum);
+  });
 }
 
 function destroy(req, res) {
