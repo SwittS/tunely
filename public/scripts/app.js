@@ -1,55 +1,46 @@
 /* CLIENT-SIDE JS
- *
- * You may edit this file as you see fit.  Try to separate different components
- * into functions and objects as needed.
- *
- */
-console.log("Sanity Check: JS is working!");
-
-/* hard-coded data! */
+*
+* You may edit this file as you see fit.  Try to separate different components
+* into functions and objects as needed.
+*
+*/
+var template;
+var $albumsList;
 var sampleAlbums = [];
-sampleAlbums.push({
-             artistName: 'Ladyhawke',
-             name: 'Ladyhawke',
-             releaseDate: '2008, November 18',
-             genres: [ 'new wave', 'indie rock', 'synth pop' ]
-           });
-sampleAlbums.push({
-             artistName: 'The Knife',
-             name: 'Silent Shout',
-             releaseDate: '2006, February 17',
-             genres: [ 'synth pop', 'electronica', 'experimental' ]
-           });
-sampleAlbums.push({
-             artistName: 'Juno Reactor',
-             name: 'Shango',
-             releaseDate: '2000, October 9',
-             genres: [ 'electronic', 'goa trance', 'tribal house' ]
-           });
-sampleAlbums.push({
-             artistName: 'Philip Wesley',
-             name: 'Dark Night of the Soul',
-             releaseDate: '2008, September 12',
-             genres: [ 'piano' ]
-           });
-/* end of hard-coded data */
-
-
+var albumsTemplate;
 
 $(document).ready(function() {
+
   console.log('app.js loaded!');
-  $.get('/api/albums').success(function (albums) {
-    albums.forEach(function(album) {
-      renderAlbum(album);
-    });
-  });
+
+ $.ajax({
+   method: 'GET',
+   url: '/api/albums',
+   success: handleSuccess,
+   error: handleError
+ });
+ $('.form-horizontal').on("submit", function(e){
+   e.preventDefault();
+   console.log($(this).serialize());
+   $(this).val('');
+ });
 });
+
+
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
-  console.log('rendering album:', album);
-  var templateHtml = $('#album-template').html();
-  var albumTemplate = Handlebars.compile(templateHtml);
-  var partialAlbumHtml = albumTemplate(album);
-  $('#albums').prepend(partialAlbumHtml);
+  var albumHtml = $('#albums-template').html();
+  albumsTemplate = Handlebars.compile(albumHtml);
+  var html = albumsTemplate({albums: sampleAlbums});
+  $('#albums').prepend(html);
+}
+function handleSuccess(json) {
+  sampleAlbums = json;
+  renderAlbum();
+}
+
+function handleError(e) {
+  console.log('uh oh');
+  $('#albums').text('Failed to load albums, is the server working?');
 }
