@@ -18,7 +18,7 @@ var albumsList =[
                 name: 'Metallica',
                 releaseDate: '1991, August 12',
                 genres: [ 'heavy metal' ],
-                albumArt: 'images/nine-inch-nails.jpg'
+                albumArt: 'images/metallica.jpg'
               },
               {
                 artistName: 'The Prodigy',

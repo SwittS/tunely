@@ -13,3 +13,7 @@
   vertical-align: baseline;
   margin-right: 12px;
 }
+
+img {
+  border: 5px solid black;
+}
