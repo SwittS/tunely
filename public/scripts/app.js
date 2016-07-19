@@ -4,43 +4,34 @@
 * into functions and objects as needed.
 *
 */
-var template;
-var $albumsList;
-var sampleAlbums = [];
-var albumsTemplate;
-
 $(document).ready(function() {
-
   console.log('app.js loaded!');
+ $.get('/api/albums').success(function (albums) {
+   albums.forEach(function(album) {
+     renderAlbum(album);
+   });
+ });
 
- $.ajax({
-   method: 'GET',
-   url: '/api/albums',
-   success: handleSuccess,
-   error: handleError
- });
- $('.form-horizontal').on("submit", function(e){
+ $('#album-form form').on("submit", function(e){
    e.preventDefault();
-   console.log($(this).serialize());
-   $(this).val('');
+   var formData = $(this).serialize();
+   console.log('formData', formData);
+   $.post('/api/albums', formData, function(album){
+     console.log('album after POST', album);
+     renderAlbum(album);
+   });
+   $(this).trigger("reset");
  });
+
 });
 
 
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
+  console.log('rendering album', album);
   var albumHtml = $('#albums-template').html();
-  albumsTemplate = Handlebars.compile(albumHtml);
-  var html = albumsTemplate({albums: sampleAlbums});
+  var albumsTemplate = Handlebars.compile(albumHtml);
+  var html = albumsTemplate(album);
   $('#albums').prepend(html);
-}
-function handleSuccess(json) {
-  sampleAlbums = json;
-  renderAlbum();
-}
-
-function handleError(e) {
-  console.log('uh oh');
-  $('#albums').text('Failed to load albums, is the server working?');
 }

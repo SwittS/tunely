@@ -1,8 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-
-
 var AlbumSchema = new Schema({
   artistName: String,
   name: String,
